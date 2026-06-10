@@ -547,12 +547,10 @@ function renderFlow(f){
   f.steps.forEach((step,si)=>{
     rail.appendChild(renderStep(f,step,si));
   });
-  wrap.appendChild(rail);
-
-  // output section
   if(f.output){
-    wrap.appendChild(renderOutput(f));
+    rail.appendChild(renderOutputStep(f, f.steps.length));
   }
+  wrap.appendChild(rail);
 
   const reset = el('button','reset','この対応をリセット');
   reset.onclick = ()=>{
@@ -642,23 +640,29 @@ function noteMap(f){
   f.steps.forEach((st,si)=>{ m['s'+si]=state.notes[`${f.id}:s${si}`]||''; });
   return m;
 }
-function refreshPreview(f){
-  if(previewEl) previewEl.textContent = f.output.build(noteMap(f));
-}
-function renderOutput(f){
-  const o = el('div','output');
-  const card = el('div','output-card');
-  card.innerHTML = `<h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>${f.output.title}</h3><p>${f.output.desc}</p>`;
+function refreshPreview(f){ /* no-op: preview removed */ }
+function renderOutputStep(f, si){
+  const s = el('div','step');
+  s.innerHTML = `<div class="node"><span class="num">${si+1}</span><span class="chk">${CHK}</span></div>`;
+  s.style.paddingBottom = '14px';
+
+  const panel = el('div','panel');
+  const head = el('div','panel-head');
+  head.innerHTML = `<div class="step-ttl">${f.output.title}</div>`;
+  panel.appendChild(head);
+
+  const inner = el('div'); inner.style.padding='0 13px 14px';
 
   const pre = el('pre','preview'); pre.style.display='none';
-  previewEl=pre; card.appendChild(pre);
+  previewEl = pre; inner.appendChild(pre);
 
   const errEl = el('div'); errEl.style.cssText='font-size:11.5px;color:var(--red);margin-bottom:8px;display:none;';
+  inner.appendChild(errEl);
 
   const IC_SLACK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/><path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/></svg>`;
 
-  // 清書ボタン
-  const rewriteBtn = el('button','rewrite-btn'); rewriteBtn.style.cssText='width:100%;justify-content:center;margin-bottom:8px;font-size:15px;font-weight:700;padding:13px;border-radius:11px;letter-spacing:.03em;';
+  const rewriteBtn = el('button','rewrite-btn');
+  rewriteBtn.style.cssText='width:100%;justify-content:center;margin-bottom:8px;font-size:15px;font-weight:700;padding:13px;border-radius:11px;letter-spacing:.03em;';
   rewriteBtn.type='button'; rewriteBtn.innerHTML = IC_SPARK + '清書する';
   rewriteBtn.onclick = async () => {
     const nm = noteMap(f);
@@ -672,18 +676,18 @@ function renderOutput(f){
       pre.textContent = result;
       pre.style.display = 'block';
       slackBtn.style.display = 'flex';
+      s.classList.add('done');
     } catch(e) {
       errEl.textContent = '⚠ ' + e.message; errEl.style.display='block';
     }
     rewriteBtn.classList.remove('loading'); rewriteBtn.innerHTML = IC_SPARK + '清書する';
   };
 
-  // Slackボタン（清書後に表示）
   const slackBtn = el('button','copy-btn'); slackBtn.style.display='none';
   slackBtn.innerHTML = IC_SLACK + 'Slackに送信';
   slackBtn.onclick = async () => {
     const text = pre.textContent;
-    errEl.style.display = 'none';
+    errEl.style.display='none';
     slackBtn.style.opacity='.5'; slackBtn.style.pointerEvents='none';
     slackBtn.innerHTML = IC_SPIN + '送信中…';
     try {
@@ -701,11 +705,11 @@ function renderOutput(f){
     }
   };
 
-  card.appendChild(errEl);
-  card.appendChild(rewriteBtn);
-  card.appendChild(slackBtn);
-  o.appendChild(card);
-  return o;
+  inner.appendChild(rewriteBtn);
+  inner.appendChild(slackBtn);
+  panel.appendChild(inner);
+  s.appendChild(panel);
+  return s;
 }
 </script>
 </body>
