@@ -264,17 +264,12 @@
 
 <script>
 /* ---------- API ---------- */
-const ANTHROPIC_API_KEY = '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';
-const SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/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';
+// APIキー・Webhook URLはサーバー側の環境変数で管理（Vercel: ANTHROPIC_API_KEY / SLACK_WEBHOOK_URL）
 
 async function rewriteMemo(text, context) {
   const res = await fetch('/api/messages', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': ANTHROPIC_API_KEY,
-      'anthropic-version': '2023-06-01',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 512,
