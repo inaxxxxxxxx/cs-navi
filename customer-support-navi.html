@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>顧客対応ナビ｜TERMINAL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAFAFA; --surface:#FFFFFF; --surface-2:#EEEEEE;
+    --ink:#424242; --ink-2:rgba(66,66,66,.64); --ink-3:rgba(66,66,66,.46);
+    --line:#EEEEEE; --line-2:rgba(66,66,66,.18);
+    --gold:#BE9C59; --red:#D15954;
+    --shadow:0 1px 2px rgba(66,66,66,.05),0 8px 24px rgba(66,66,66,.07);
+    --radius:16px;
+    --accent:var(--gold); --accent-soft:var(--surface-2);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Zen Kaku Gothic New',system-ui,-apple-system,sans-serif;
+    background:var(--bg); color:var(--ink);
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+    font-size:16px; padding-bottom:env(safe-area-inset-bottom);
+  }
+  .app{max-width:560px;margin:0 auto;min-height:100vh;background:var(--bg);position:relative;}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;top:0;z-index:30;background:rgba(250,250,250,.88);
+    backdrop-filter:saturate(1.4) blur(10px);
+    padding:14px 18px 12px;border-bottom:1px solid var(--line);
+  }
+  .brand{display:flex;align-items:center;gap:9px;}
+  .mark{
+    width:30px;height:30px;border-radius:9px;background:var(--ink);
+    display:grid;place-items:center;flex:none;
+  }
+  .mark span{width:13px;height:13px;border:2.5px solid var(--gold);border-radius:50%;}
+  .wordmark{font-size:11px;letter-spacing:.22em;color:var(--ink-2);font-weight:500;line-height:1;}
+  .apptitle{font-size:17px;font-weight:700;letter-spacing:.01em;line-height:1.1;margin-top:2px;}
+  .buddy{font-size:11px;color:var(--ink-3);letter-spacing:.04em;}
+  .back{
+    display:none;align-items:center;gap:6px;background:none;border:0;
+    color:var(--ink-2);font:inherit;font-size:14px;font-weight:500;
+    padding:6px 4px;margin:-6px -4px 8px;cursor:pointer;
+  }
+  .back svg{width:16px;height:16px;}
+  .crumb{display:flex;align-items:center;gap:8px;}
+  .crumb-dot{width:9px;height:9px;border-radius:3px;background:var(--accent);flex:none;}
+
+  /* ---------- Home ---------- */
+  .lead{padding:20px 18px 6px;}
+  .lead h1{font-size:21px;line-height:1.4;margin:0 0 6px;font-weight:700;letter-spacing:.01em;}
+  .lead p{margin:0;color:var(--ink-2);font-size:14px;}
+  .section-label{
+    font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--ink-3);
+    padding:22px 18px 8px;text-transform:none;
+  }
+  .cards{display:flex;flex-direction:column;gap:12px;padding:4px 18px 8px;}
+  .card{
+    width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);padding:16px 16px 16px 18px;cursor:pointer;
+    display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);
+    position:relative;overflow:hidden;font:inherit;color:inherit;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .card:active{transform:scale(.985);}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c);}
+  .card .ic{
+    width:42px;height:42px;border-radius:12px;flex:none;display:grid;place-items:center;
+    background:var(--cs);color:var(--c);
+  }
+  .card .ic svg{width:22px;height:22px;}
+  .card .body{flex:1;min-width:0;}
+  .card .ttl{font-size:16px;font-weight:700;letter-spacing:.01em;}
+  .card .ex{font-size:12.5px;color:var(--ink-2);margin-top:3px;line-height:1.5;}
+  .card .go{align-self:center;color:var(--ink-3);flex:none;}
+  .card .go svg{width:18px;height:18px;}
+
+  .mindset{margin:6px 18px 30px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);}
+  .mindset .mh{display:flex;align-items:center;gap:7px;color:var(--gold);font-weight:700;font-size:13px;letter-spacing:.04em;}
+  .mindset .mh svg{width:16px;height:16px;}
+  .mindset ul{margin:10px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;}
+  .mindset li{font-size:13px;color:var(--ink-2);display:flex;gap:8px;line-height:1.5;}
+  .mindset li b{color:var(--gold);font-weight:700;flex:none;}
+
+  /* ---------- Flow ---------- */
+  .flow{display:none;padding:6px 0 120px;}
+  .flow.active{display:block;}
+  .flow-intro{padding:6px 18px 4px;}
+  .flow-intro .ft{font-size:20px;font-weight:700;letter-spacing:.01em;}
+  .motto{
+    margin:12px 18px 6px;background:var(--accent-soft);border-radius:12px;
+    padding:11px 14px;font-size:13.5px;font-weight:500;color:var(--ink);
+    display:flex;align-items:center;gap:9px;
+  }
+  .motto .pin{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;}
+
+  .rail{position:relative;padding:14px 18px 0;}
+  .step{position:relative;padding-left:38px;padding-bottom:14px;}
+  .step::before{content:"";position:absolute;left:13px;top:30px;bottom:-2px;width:2px;background:var(--line-2);}
+  .step:last-of-type::before{display:none;}
+  .node{
+    position:absolute;left:0;top:2px;width:28px;height:28px;border-radius:50%;
+    background:var(--surface);border:2px solid var(--line-2);color:var(--ink-3);
+    display:grid;place-items:center;font-size:13px;font-weight:700;z-index:2;
+    transition:.2s;
+  }
+  .step.done .node{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .step.done::before{background:var(--accent);}
+  .step.done .node .num{display:none;}
+  .step.done .node .chk{display:block;}
+  .node .chk{display:none;width:15px;height:15px;}
+
+  .panel{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);overflow:hidden;
+  }
+  .panel-head{padding:13px 15px;}
+  .step-ttl{font-size:15.5px;font-weight:700;letter-spacing:.01em;line-height:1.4;}
+  .kanten-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;}
+  .kanten{
+    display:inline-flex;align-items:center;gap:5px;background:var(--surface-2);
+    color:var(--ink);border:1px solid var(--line);border-radius:999px;
+    padding:4px 10px 4px 8px;font-size:12px;font-weight:700;cursor:help;
+  }
+  .kanten .k-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);}
+  .kanten-desc{
+    margin:8px 0 0;font-size:12px;color:var(--ink);background:var(--bg);
+    border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:8px 11px;
+    line-height:1.55;
+  }
+
+  .items{list-style:none;margin:4px 0 0;padding:0 8px 6px;}
+  .item{
+    display:flex;gap:11px;align-items:flex-start;padding:10px 8px;border-top:1px solid var(--line);
+    cursor:pointer;
+  }
+  .item:first-child{border-top:1px solid var(--line);}
+  .box{
+    width:21px;height:21px;border-radius:7px;border:2px solid var(--line-2);
+    flex:none;margin-top:1px;display:grid;place-items:center;background:var(--surface-2);
+    transition:.15s;
+  }
+  .box svg{width:13px;height:13px;opacity:0;transform:scale(.6);transition:.15s;color:#fff;}
+  .item.checked .box{background:var(--accent);border-color:var(--accent);}
+  .item.checked .box svg{opacity:1;transform:scale(1);}
+  .item .qt{flex:1;}
+  .item .q{font-size:14px;line-height:1.5;}
+  .item.checked .q{color:var(--ink-2);}
+  .item .sub{font-size:12px;color:var(--ink-3);margin-top:3px;line-height:1.5;display:flex;gap:6px;}
+  .item .sub::before{content:"↳";color:var(--accent);flex:none;}
+
+  .note-wrap{padding:0 13px 14px;}
+  .note-wrap label{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin:2px 0 6px;letter-spacing:.02em;}
+  textarea{
+    width:100%;border:1px solid var(--line-2);border-radius:10px;background:var(--surface-2);
+    font:inherit;font-size:14px;padding:10px 12px;resize:vertical;min-height:62px;color:var(--ink);
+  }
+  textarea:focus{outline:none;border-color:var(--accent);background:#fff;}
+  .tip{
+    margin:8px 13px 14px;font-size:12px;color:var(--ink);background:var(--surface-2);
+    border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:9px 12px;display:flex;gap:8px;line-height:1.5;
+  }
+  .tip svg{color:var(--gold);}
+  .tip svg{width:15px;height:15px;flex:none;margin-top:1px;}
+
+  /* ---------- Output / summary ---------- */
+  .output{margin:8px 18px 0;}
+  .output-card{background:var(--ink);color:#FFFFFF;border-radius:var(--radius);padding:16px 16px 14px;box-shadow:var(--shadow);}
+  .output-card h3{margin:0 0 4px;font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;}
+  .output-card h3 svg{width:17px;height:17px;color:var(--gold);}
+  .output-card p{margin:0 0 12px;font-size:12.5px;color:rgba(255,255,255,.62);line-height:1.55;}
+  pre.preview{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+    border-radius:10px;padding:12px 13px;font-family:'Zen Kaku Gothic New',monospace;
+    font-size:12.5px;line-height:1.7;color:rgba(255,255,255,.82);white-space:pre-wrap;word-break:break-word;
+    max-height:240px;overflow:auto;margin:0 0 12px;
+  }
+  .copy-btn{
+    width:100%;border:0;background:var(--gold);color:#424242;font:inherit;font-weight:700;
+    font-size:15px;letter-spacing:.03em;padding:13px;border-radius:11px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:8px;transition:.15s;
+  }
+  .copy-btn:active{transform:scale(.99);}
+  .copy-btn svg{width:17px;height:17px;}
+  .copy-btn.copied{background:rgba(255,255,255,.14);color:#fff;}
+
+  .reset{
+    display:block;margin:18px auto 0;background:none;border:1px solid var(--line-2);
+    color:var(--ink-2);font:inherit;font-size:13px;font-weight:500;padding:9px 18px;
+    border-radius:999px;cursor:pointer;
+  }
+  .reset:active{background:var(--surface);}
+
+  .foot{text-align:center;color:var(--ink-3);font-size:11px;padding:26px 18px 30px;letter-spacing:.04em;}
+
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px;}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <button class="back" id="backBtn" aria-label="戻る">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      対応の種別をえらび直す
+    </button>
+    <div class="brand" id="brandRow">
+      <div class="mark"><span></span></div>
+      <div>
+        <div class="wordmark">TERMINAL</div>
+        <div class="apptitle">顧客対応ナビ</div>
+      </div>
+    </div>
+    <div class="crumb" id="crumb" style="display:none">
+      <span class="crumb-dot"></span>
+      <span class="apptitle" id="crumbTitle" style="font-size:16px"></span>
+    </div>
+  </header>
+
+  <!-- HOME -->
+  <main id="home">
+    <div class="lead">
+      <h1>いまの問い合わせは、<br>どのタイプ？</h1>
+      <p>近いものをえらぶと、確認すべきこと・考えるべき観点を順番にご案内します。</p>
+    </div>
+    <div class="section-label">問い合わせの種別をえらぶ</div>
+    <div class="cards" id="cards"></div>
+
+    <div class="section-label">どの対応でも共通の心構え</div>
+    <div class="mindset">
+      <div class="mh">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.8 5.7 21l2.3-7.2-6-4.4h7.6z"/></svg>
+        考慮すべき観点
+      </div>
+      <ul>
+        <li><b>事実</b><span>推測で進めず、起きた事実を一つずつ確認する。</span></li>
+        <li><b>抽象化</b><span>目の前の依頼を、一段上の「本当の目的」に置き換えて考える。</span></li>
+        <li><b>顧客視点</b><span>相手の立場・業務の流れから、何が必要かを考える。</span></li>
+        <li><b>最大公約数</b><span>その人だけでなく、多くの人に効く解を探す。</span></li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- FLOW container injected by JS -->
+  <div id="flowMount"></div>
+
+  <div class="foot">TERMINAL — Always Your Buddy</div>
+</div>
+
+<script>
+/* ---------- 観点 definitions ---------- */
+const KANTEN = {
+  fact:     {label:'事実を確認する',   desc:'推測ではなく、実際に起きた事実を一つずつ確認する。'},
+  abstract: {label:'抽象化する',       desc:'目の前の依頼を、一段上の「本当の目的」に置き換えて考える。'},
+  customer: {label:'顧客視点で考える', desc:'相手の立場・業務の流れから、何が必要かを考える。'},
+  gcd:      {label:'最大公約数を考える', desc:'その人だけでなく、できるだけ多くの人に効く解を探す。'},
+  oneToN:   {label:'1:Nの対応を考える', desc:'今回の1件を、次の100件にも効く形（FAQ等）で残す。'},
+};
+
+/* ---------- icons ---------- */
+const IC = {
+  spec:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.2 9.2a2.8 2.8 0 1 1 4 2.5c-.9.5-1.2 1-1.2 2"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg>',
+  bug:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="8" width="10" height="11" rx="5"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8M3.5 12H7M17 12h3.5M4 18l3-1.5M20 18l-3-1.5M5 7l2.5 1.5M19 7l-2.5 1.5"/></svg>',
+  req:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 2a6.5 6.5 0 0 0-4 11.7c.6.5 1 1.3 1 2.1V16h6v-.2c0-.8.4-1.6 1-2.1A6.5 6.5 0 0 0 12 2z"/></svg>',
+};
+
+/* ---------- flow data ---------- */
+const FLOWS = [
+  {
+    id:'spec', c:'var(--gold)', cs:'var(--surface-2)',
+    title:'操作方法・仕様に関する質問',
+    ex:'「どうやって◯◯するの？」「これはどういう仕様？」',
+    motto:'まずは聞かれたことに、ちゃんと答える。',
+    steps:[
+      {title:'問い合わせの背景を確認する', noteLabel:'背景・目的でわかったこと', items:[
+        {q:'やりたいことを確認する', sub:'TERMINALの機能に期待していることは何か'},
+        {q:'困っていることを確認する', sub:'以前はどうやっていたか／導入前はどうだったか／その問題点は何か'},
+        {q:'目的を確認する（結局、何を実現したいのか）'},
+      ]},
+      {title:'プロダクトとして正しい方法を検討する', kanten:['abstract','customer'], items:[
+        {q:'作業の順番を変えるだけで解決しないか'},
+        {q:'いまの仕様で実現できる、いちばん良い方法は何か'},
+      ]},
+      {title:'案内する', kanten:['oneToN'], items:[
+        {q:'FAQがある → FAQを添えて案内する'},
+        {q:'FAQがない → 案内したうえで、FAQ作成タスクを切る'},
+      ]},
+    ],
+    output:{
+      title:'対応メモにまとめる',
+      desc:'チャット返信や社内共有にそのまま使えます。FAQ未整備なら作成タスクを忘れずに。',
+      build:n=>`【操作方法・仕様の問い合わせ 対応メモ】
+■ 背景・目的
+${n['s0']||'（未記入）'}
+
+■ 案内した内容
+${n['out_answer']||'（未記入）'}
+
+■ FAQ
+${n['out_faq']||'（FAQの有無・作成タスクの要否を記入）'}`,
+      fields:[
+        {key:'out_answer', label:'案内した内容'},
+        {key:'out_faq', label:'FAQの有無・作成タスク'},
+      ],
+    }
+  },
+  {
+    id:'bug', c:'var(--red)', cs:'var(--surface-2)',
+    title:'不具合',
+    ex:'「エラーが出る」「動かない」「表示がおかしい」',
+    motto:'急ぐ気持ちはわかる。でも、まず事実から。',
+    steps:[
+      {title:'再現する', noteLabel:'再現手順・条件', items:[
+        {q:'何回やってもダメか聞く'},
+        {q:'顧客の環境と揃える（端末・ブラウザ・権限など）'},
+        {q:'判別可能な範囲まで細分化し、発生源を特定する', kanten:['fact'], sub:'広い範囲から、切り捨てられる可能性を潰して狭めていく'},
+        {q:'他のユーザーでも発生しているか', sub:'発生していれば → 影響範囲はどのくらいか'},
+        {q:'特定の範囲（画面・データ・操作）で起きているか'},
+        {q:'類似パターンで同じ結果になるか', sub:'発生するとき／しないときの違いは何か'},
+      ]},
+      {title:'仮説をたてる', noteLabel:'原因の仮説', items:[
+        {q:'集めた事実から、原因の仮説を立てる'},
+        {q:'例外を考える（その仮説で説明できないケースはないか）'},
+      ]},
+      {title:'仮説を確認する', kanten:['fact'], noteLabel:'確認結果・代替案', items:[
+        {q:'イレギュラーな作業をしていないか'},
+        {q:'本来・急ぎの目的は何か', kanten:['abstract'], sub:'急ぎなら、目的を達成できる代替案を検討・案内する'},
+      ]},
+      {title:'不具合を起票する', items:[
+        {q:'ユーザーからの報告は、事実に忠実に書く'},
+        {q:'他の機能や画面への影響はあるか'},
+        {q:'本来どのような挙動になるべきか', sub:'履歴一覧を確認する／伊奈さんに確認する'},
+      ]},
+    ],
+    output:{
+      title:'不具合チケットにまとめる',
+      desc:'記入欄を埋めると、起票用のテンプレートが組み上がります。事実に忠実に。',
+      build:n=>`【不具合】${n['out_title']||'（事象を一行で）'}
+
+■ 事象（何が起きたか／ユーザー報告）
+${n['out_phenomenon']||n['s0']||'（未記入）'}
+
+■ 再現手順・条件
+${n['s0']||'（未記入）'}
+
+■ 影響範囲（他ユーザー・他機能/画面）
+${n['out_impact']||'（未記入）'}
+
+■ 本来あるべき挙動
+${n['out_expected']||'（未記入。履歴一覧／伊奈さんに確認）'}
+
+■ 補足（顧客の急ぎ目的・案内した代替案）
+${n['s2']||'（未記入）'}`,
+      fields:[
+        {key:'out_title', label:'事象（一行サマリ）'},
+        {key:'out_phenomenon', label:'事象の詳細（任意。空なら手順を流用）'},
+        {key:'out_impact', label:'影響範囲'},
+        {key:'out_expected', label:'本来あるべき挙動'},
+      ],
+    }
+  },
+  {
+    id:'req', c:'var(--ink)', cs:'var(--surface-2)',
+    title:'顧客要望・機能改善',
+    ex:'「◯◯できるようにしてほしい」「ここを改善して」',
+    motto:'言われた要望の、ひとつ奥の「課題」を掘る。',
+    steps:[
+      {title:'現状を把握する', kanten:['fact','customer'], noteLabel:'現状でわかったこと', items:[
+        {q:'当事者は誰か／困っているのは誰か', sub:'連絡してきた人とは限らない → 当事者に直接聞く'},
+        {q:'代わりに、いまどうやっているか', sub:'なぜそれだと困るのか／現状使っているもののサンプルをもらう'},
+        {q:'頻度はどれくらいか（例：毎日やる？）'},
+        {q:'ボリューム（例：どれくらいの数・量？）'},
+        {q:'全体に対する割合（例：全体の何割？）'},
+        {q:'推移（例：今後増えていきそう？）'},
+        {q:'他の業務への影響はあるか'},
+      ]},
+      {title:'課題を特定する', kanten:['abstract'], noteLabel:'本当の課題', items:[
+        {q:'なんでそれが課題になっているのか'},
+        {q:'他のブランドではどうか', sub:'他ブランドとの違いは何か'},
+        {q:'全体・長期的に見た、理想の姿は何か'},
+      ]},
+      {title:'ソリューションを検討する', kanten:['gcd'], noteLabel:'想定ソリューション',
+       tip:'パターンに応じて挙動を決めるなら、テーブルにして簡潔にまとめる。', items:[
+        {q:'他のやり方はあるか'},
+        {q:'母数に対する割合（何人・何件に効くか）'},
+        {q:'他の課題も一緒に解決できるか'},
+        {q:'他のサービスではどうなっているか', sub:'他サービスとTERMINALの違いは何か'},
+        {q:'誰にとっての課題か'},
+        {q:'TERMINAL上のデータ構造はどうなっているか'},
+      ]},
+      {title:'起票する', items:[
+        {q:'ここまでの内容を、起票文にまとめる'},
+      ]},
+    ],
+    output:{
+      title:'要望チケットにまとめる',
+      desc:'現状→課題→ソリューションの順で、判断に必要な材料がそろった形に整えます。',
+      build:n=>`【要望・機能改善】${n['out_title']||'（要望を一行で）'}
+
+■ 現状（誰が・どうやっている・頻度/規模）
+${n['s0']||'（未記入）'}
+
+■ 課題（なぜ課題なのか／本来の理想）
+${n['s1']||'（未記入）'}
+
+■ 想定ソリューション
+${n['s2']||'（未記入）'}
+
+■ 補足（他ブランド・他サービスとの違い、データ構造）
+${n['out_note']||'（未記入）'}`,
+      fields:[
+        {key:'out_title', label:'要望（一行サマリ）'},
+        {key:'out_note', label:'補足（違い・データ構造など）'},
+      ],
+    }
+  },
+];
+
+/* ---------- state ---------- */
+const state = { flow:null, checked:{}, notes:{} };
+
+/* ---------- helpers ---------- */
+const el = (t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
+const CHK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>';
+
+/* ---------- home cards ---------- */
+const cards = document.getElementById('cards');
+FLOWS.forEach(f=>{
+  const b = el('button','card');
+  b.style.setProperty('--c',f.c); b.style.setProperty('--cs',f.cs);
+  b.innerHTML = `
+    <div class="ic">${IC[f.id]}</div>
+    <div class="body"><div class="ttl">${f.title}</div><div class="ex">${f.ex}</div></div>
+    <div class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>`;
+  b.onclick = ()=>openFlow(f.id);
+  cards.appendChild(b);
+});
+
+/* ---------- open / close flow ---------- */
+const mount = document.getElementById('flowMount');
+const home = document.getElementById('home');
+const backBtn = document.getElementById('backBtn');
+const brandRow = document.getElementById('brandRow');
+const crumb = document.getElementById('crumb');
+const crumbTitle = document.getElementById('crumbTitle');
+
+function openFlow(id){
+  const f = FLOWS.find(x=>x.id===id);
+  state.flow=id;
+  document.documentElement.style.setProperty('--accent',f.c);
+  document.documentElement.style.setProperty('--accent-soft',f.cs);
+  crumb.querySelector('.crumb-dot').style.background=f.c;
+  home.style.display='none';
+  backBtn.style.display='inline-flex';
+  brandRow.style.display='none';
+  crumb.style.display='flex';
+  crumbTitle.textContent=f.title;
+  mount.innerHTML='';
+  mount.appendChild(renderFlow(f));
+  window.scrollTo(0,0);
+}
+backBtn.onclick = ()=>{
+  state.flow=null;
+  home.style.display='block';
+  backBtn.style.display='none';
+  brandRow.style.display='flex';
+  crumb.style.display='none';
+  mount.innerHTML='';
+  document.documentElement.style.setProperty('--accent','var(--gold)');
+  document.documentElement.style.setProperty('--accent-soft','var(--surface-2)');
+  window.scrollTo(0,0);
+};
+
+/* ---------- render a flow ---------- */
+function renderFlow(f){
+  const wrap = el('div','flow active');
+
+  const motto = el('div','motto',`<span class="pin"></span>${f.motto}`);
+  wrap.appendChild(motto);
+
+  const rail = el('div','rail');
+  f.steps.forEach((step,si)=>{
+    rail.appendChild(renderStep(f,step,si));
+  });
+  wrap.appendChild(rail);
+
+  // output section
+  if(f.output){
+    wrap.appendChild(renderOutput(f));
+  }
+
+  const reset = el('button','reset','この対応をリセット');
+  reset.onclick = ()=>{
+    Object.keys(state.checked).forEach(k=>{ if(k.startsWith(f.id+':')) delete state.checked[k]; });
+    Object.keys(state.notes).forEach(k=>{ if(k.startsWith(f.id+':')) delete state.notes[k]; });
+    openFlow(f.id);
+  };
+  wrap.appendChild(reset);
+  return wrap;
+}
+
+function stepDone(fid,si,count){
+  for(let i=0;i<count;i++){ if(!state.checked[`${fid}:${si}:${i}`]) return false; }
+  return count>0;
+}
+
+function renderStep(f,step,si){
+  const s = el('div','step');
+  const done = stepDone(f.id,si,step.items.length);
+  if(done) s.classList.add('done');
+
+  s.innerHTML = `<div class="node"><span class="num">${si+1}</span><span class="chk">${CHK}</span></div>`;
+
+  const panel = el('div','panel');
+  const head = el('div','panel-head');
+  head.innerHTML = `<div class="step-ttl">${step.title}</div>`;
+  if(step.kanten){
+    const kr = el('div','kanten-row');
+    step.kanten.forEach(kk=>{
+      const k = KANTEN[kk];
+      const chip = el('button','kanten',`<span class="k-dot"></span>${k.label}`);
+      chip.type='button';
+      chip.onclick=(e)=>{
+        e.stopPropagation();
+        const existing = head.querySelector('.kanten-desc[data-k="'+kk+'"]');
+        if(existing){ existing.remove(); return; }
+        const d = el('div','kanten-desc',k.desc); d.dataset.k=kk;
+        head.appendChild(d);
+      };
+      kr.appendChild(chip);
+    });
+    head.appendChild(kr);
+  }
+  panel.appendChild(head);
+
+  const ul = el('ul','items');
+  step.items.forEach((it,ii)=>{
+    const key=`${f.id}:${si}:${ii}`;
+    const li = el('li','item'+(state.checked[key]?' checked':''));
+    let sub = it.sub?`<div class="sub">${it.sub}</div>`:'';
+    let kchip='';
+    if(it.kanten){ kchip = ' <span style="color:var(--gold);font-size:11px;font-weight:700">['+KANTEN[it.kanten[0]].label+']</span>'; }
+    li.innerHTML = `<div class="box">${CHK}</div><div class="qt"><div class="q">${it.q}${kchip}</div>${sub}</div>`;
+    li.onclick=()=>{
+      state.checked[key]=!state.checked[key];
+      li.classList.toggle('checked',state.checked[key]);
+      const nowDone = stepDone(f.id,si,step.items.length);
+      s.classList.toggle('done',nowDone);
+    };
+    ul.appendChild(li);
+  });
+  panel.appendChild(ul);
+
+  if(step.tip){
+    panel.appendChild(el('div','tip',`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.6.5 1 1.2 1 2V16h6v-.5c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></svg>${step.tip}`));
+  }
+
+  if(step.noteLabel){
+    const nw = el('div','note-wrap');
+    const nkey = `${f.id}:s${si}`;
+    nw.innerHTML = `<label>${step.noteLabel}</label>`;
+    const ta = el('textarea'); ta.value=state.notes[nkey]||'';
+    ta.placeholder='ここでわかったことをメモ（起票文に反映されます）';
+    ta.oninput=()=>{ state.notes[nkey]=ta.value; refreshPreview(f); };
+    nw.appendChild(ta);
+    panel.appendChild(nw);
+  }
+
+  s.appendChild(panel);
+  return s;
+}
+
+/* ---------- output ---------- */
+let previewEl=null;
+function noteMap(f){
+  const m={};
+  f.steps.forEach((st,si)=>{ m['s'+si]=state.notes[`${f.id}:s${si}`]||''; });
+  (f.output.fields||[]).forEach(fl=>{ m[fl.key]=state.notes[`${f.id}:${fl.key}`]||''; });
+  return m;
+}
+function refreshPreview(f){
+  if(previewEl) previewEl.textContent = f.output.build(noteMap(f));
+}
+function renderOutput(f){
+  const o = el('div','output');
+  const card = el('div','output-card');
+  card.innerHTML = `<h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>${f.output.title}</h3><p>${f.output.desc}</p>`;
+
+  (f.output.fields||[]).forEach(fl=>{
+    const w = el('div'); w.style.marginBottom='10px';
+    w.innerHTML = `<label style="display:block;font-size:12px;font-weight:700;color:rgba(255,255,255,.62);margin-bottom:5px">${fl.label}</label>`;
+    const ta = el('textarea'); ta.style.minHeight='44px';
+    ta.style.background='rgba(255,255,255,.08)'; ta.style.color='#FFFFFF'; ta.style.borderColor='rgba(255,255,255,.16)';
+    const nkey=`${f.id}:${fl.key}`;
+    ta.value=state.notes[nkey]||'';
+    ta.oninput=()=>{ state.notes[nkey]=ta.value; refreshPreview(f); };
+    w.appendChild(ta); card.appendChild(w);
+  });
+
+  const pre = el('pre','preview'); pre.textContent=f.output.build(noteMap(f));
+  previewEl=pre; card.appendChild(pre);
+
+  const btn = el('button','copy-btn',`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>起票文をコピー`);
+  btn.onclick=async()=>{
+    const text = f.output.build(noteMap(f));
+    try{ await navigator.clipboard.writeText(text); }
+    catch(e){ const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+    btn.classList.add('copied');
+    btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>コピーしました`;
+    setTimeout(()=>{ btn.classList.remove('copied'); btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>起票文をコピー`; },1800);
+  };
+  card.appendChild(btn);
+  o.appendChild(card);
+  return o;
+}
+</script>
+</body>
+</html>
