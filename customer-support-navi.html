@@ -59,33 +59,41 @@
     font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--ink-3);
     padding:22px 18px 8px;text-transform:none;
   }
-  .cards{display:flex;flex-direction:column;gap:12px;padding:4px 18px 8px;}
+  .cards{display:flex;flex-direction:column;gap:10px;padding:4px 18px 8px;}
   .card{
     width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);
-    border-radius:var(--radius);padding:16px 16px 16px 18px;cursor:pointer;
-    display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);
+    border-radius:var(--radius);padding:18px 16px 18px 18px;cursor:pointer;
+    display:flex;gap:14px;align-items:center;box-shadow:var(--shadow);
     position:relative;overflow:hidden;font:inherit;color:inherit;
     transition:transform .12s ease, box-shadow .12s ease;
   }
   .card:active{transform:scale(.985);}
-  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c);}
   .card .ic{
-    width:42px;height:42px;border-radius:12px;flex:none;display:grid;place-items:center;
-    background:var(--cs);color:var(--c);
+    width:46px;height:46px;border-radius:14px;flex:none;display:grid;place-items:center;
+    background:var(--surface-2);color:var(--c);border:1.5px solid var(--line);
   }
   .card .ic svg{width:22px;height:22px;}
   .card .body{flex:1;min-width:0;}
-  .card .ttl{font-size:16px;font-weight:700;letter-spacing:.01em;}
-  .card .ex{font-size:12.5px;color:var(--ink-2);margin-top:3px;line-height:1.5;}
-  .card .go{align-self:center;color:var(--ink-3);flex:none;}
-  .card .go svg{width:18px;height:18px;}
+  .card .ttl{font-size:15.5px;font-weight:700;letter-spacing:.01em;}
+  .card .ex{font-size:12px;color:var(--ink-3);margin-top:4px;line-height:1.5;}
+  .card .go{align-self:center;color:var(--ink-3);flex:none;opacity:.5;}
+  .card .go svg{width:17px;height:17px;}
 
-  .mindset{margin:6px 18px 30px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);}
-  .mindset .mh{display:flex;align-items:center;gap:7px;color:var(--gold);font-weight:700;font-size:13px;letter-spacing:.04em;}
-  .mindset .mh svg{width:16px;height:16px;}
-  .mindset ul{margin:10px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;}
-  .mindset li{font-size:13px;color:var(--ink-2);display:flex;gap:8px;line-height:1.5;}
-  .mindset li b{color:var(--gold);font-weight:700;flex:none;}
+  .mindset{margin:6px 18px 30px;}
+  .mindset .mh{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--ink-3);margin-bottom:10px;}
+  .kanten-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+  .kg-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:13px 13px 12px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:7px;
+  }
+  .kg-icon{
+    width:34px;height:34px;border-radius:10px;background:var(--surface-2);
+    display:grid;place-items:center;color:var(--ink);
+  }
+  .kg-icon svg{width:17px;height:17px;}
+  .kg-label{font-size:13px;font-weight:700;color:var(--ink);line-height:1.2;}
+  .kg-desc{font-size:11.5px;color:var(--ink-3);line-height:1.5;}
+
 
   /* ---------- Flow ---------- */
   .flow{display:none;padding:6px 0 120px;}
@@ -156,6 +164,15 @@
 
   .note-wrap{padding:0 13px 14px;}
   .note-wrap label{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin:2px 0 6px;letter-spacing:.02em;}
+  .rewrite-btn{
+    display:flex;align-items:center;gap:5px;margin-top:6px;
+    background:none;border:1px solid var(--line-2);border-radius:999px;
+    color:var(--ink-2);font:inherit;font-size:12px;font-weight:700;
+    padding:5px 12px;cursor:pointer;transition:.12s;
+  }
+  .rewrite-btn:active{background:var(--surface-2);}
+  .rewrite-btn.loading{opacity:.5;pointer-events:none;}
+  .rewrite-btn svg{width:13px;height:13px;color:var(--gold);}
   textarea{
     width:100%;border:1px solid var(--line-2);border-radius:10px;background:var(--surface-2);
     font:inherit;font-size:14px;padding:10px 12px;resize:vertical;min-height:62px;color:var(--ink);
@@ -170,24 +187,24 @@
 
   /* ---------- Output / summary ---------- */
   .output{margin:8px 18px 0;}
-  .output-card{background:var(--ink);color:#FFFFFF;border-radius:var(--radius);padding:16px 16px 14px;box-shadow:var(--shadow);}
+  .output-card{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 14px;box-shadow:var(--shadow);}
   .output-card h3{margin:0 0 4px;font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;}
   .output-card h3 svg{width:17px;height:17px;color:var(--gold);}
-  .output-card p{margin:0 0 12px;font-size:12.5px;color:rgba(255,255,255,.62);line-height:1.55;}
+  .output-card p{margin:0 0 12px;font-size:12.5px;color:var(--ink-2);line-height:1.55;}
   pre.preview{
-    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+    background:var(--bg);border:1px solid var(--line);
     border-radius:10px;padding:12px 13px;font-family:'Zen Kaku Gothic New',monospace;
-    font-size:12.5px;line-height:1.7;color:rgba(255,255,255,.82);white-space:pre-wrap;word-break:break-word;
+    font-size:12.5px;line-height:1.7;color:var(--ink-2);white-space:pre-wrap;word-break:break-word;
     max-height:240px;overflow:auto;margin:0 0 12px;
   }
   .copy-btn{
-    width:100%;border:0;background:var(--gold);color:#424242;font:inherit;font-weight:700;
+    width:100%;border:0;background:var(--ink);color:#FFFFFF;font:inherit;font-weight:700;
     font-size:15px;letter-spacing:.03em;padding:13px;border-radius:11px;cursor:pointer;
     display:flex;align-items:center;justify-content:center;gap:8px;transition:.15s;
   }
   .copy-btn:active{transform:scale(.99);}
   .copy-btn svg{width:17px;height:17px;}
-  .copy-btn.copied{background:rgba(255,255,255,.14);color:#fff;}
+  .copy-btn.copied{background:var(--surface-2);color:var(--ink);}
 
   .reset{
     display:block;margin:18px auto 0;background:none;border:1px solid var(--line-2);
@@ -199,6 +216,7 @@
   .foot{text-align:center;color:var(--ink-3);font-size:11px;padding:26px 18px 30px;letter-spacing:.04em;}
 
   :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px;}
+  @keyframes spin{to{transform:rotate(360deg)}}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 </style>
 </head>
@@ -233,16 +251,8 @@
 
     <div class="section-label">どの対応でも共通の心構え</div>
     <div class="mindset">
-      <div class="mh">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.8 5.7 21l2.3-7.2-6-4.4h7.6z"/></svg>
-        考慮すべき観点
-      </div>
-      <ul>
-        <li><b>事実</b><span>推測で進めず、起きた事実を一つずつ確認する。</span></li>
-        <li><b>抽象化</b><span>目の前の依頼を、一段上の「本当の目的」に置き換えて考える。</span></li>
-        <li><b>顧客視点</b><span>相手の立場・業務の流れから、何が必要かを考える。</span></li>
-        <li><b>最大公約数</b><span>その人だけでなく、多くの人に効く解を探す。</span></li>
-      </ul>
+      <div class="mh">考慮すべき観点</div>
+      <div class="kanten-grid" id="kantenGrid"></div>
     </div>
   </main>
 
@@ -253,13 +263,76 @@
 </div>
 
 <script>
+/* ---------- API ---------- */
+const ANTHROPIC_API_KEY = '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';
+const SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/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';
+
+async function rewriteMemo(text, context) {
+  const res = await fetch('/api/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 512,
+      messages: [{
+        role: 'user',
+        content: context ? `以下のメモを、社内チケット・対応メモとして読みやすい日本語に整えてください。意味・事実は変えず、体言止めや箇条書きを使って簡潔にまとめてください。メモの内容だけを出力し、説明や前置きは不要です。\n\n文脈: ${context}\n\nメモ:\n${text}` : text
+      }]
+    })
+  });
+  if (!res.ok) throw new Error(await res.text());
+  const data = await res.json();
+  return data.content[0].text;
+}
+
+const IC_SPARK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.2 3.6L17 8l-3.8 1.2L12 13l-1.2-3.8L7 8l3.8-1.4z"/><path d="M19 3l.6 1.8L21.5 6l-1.9.6L19 9l-.6-1.9L16.5 6l1.9-.6z"/><path d="M5 17l.6 1.8L7.5 20l-1.9.6L5 23l-.6-1.9L2.5 20l1.9-.6z"/></svg>`;
+const IC_SPIN  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation:spin .8s linear infinite"><path d="M21 12a9 9 0 1 1-6-8.5"/></svg>`;
+
+function addRewriteBtn(ta, context) {
+  const wrap = el('div');
+  const btn = el('button', 'rewrite-btn');
+  btn.type = 'button';
+  const errEl = el('div');
+  errEl.style.cssText = 'font-size:11.5px;color:var(--red);margin-top:5px;display:none;';
+  const setNormal = () => { btn.classList.remove('loading'); btn.innerHTML = IC_SPARK + '清書する'; };
+  setNormal();
+  btn.onclick = async () => {
+    const text = ta.value.trim();
+    if (!text) return;
+    errEl.style.display = 'none';
+    btn.classList.add('loading');
+    btn.innerHTML = IC_SPIN + '清書中…';
+    try {
+      const result = await rewriteMemo(text, context);
+      ta.value = result;
+      ta.dispatchEvent(new Event('input'));
+    } catch(e) {
+      errEl.textContent = '⚠ ' + (e.message || 'エラーが発生しました');
+      errEl.style.display = 'block';
+    }
+    setNormal();
+  };
+  wrap.appendChild(btn);
+  wrap.appendChild(errEl);
+  return wrap;
+}
+
 /* ---------- 観点 definitions ---------- */
 const KANTEN = {
-  fact:     {label:'事実を確認する',   desc:'推測ではなく、実際に起きた事実を一つずつ確認する。'},
-  abstract: {label:'抽象化する',       desc:'目の前の依頼を、一段上の「本当の目的」に置き換えて考える。'},
-  customer: {label:'顧客視点で考える', desc:'相手の立場・業務の流れから、何が必要かを考える。'},
-  gcd:      {label:'最大公約数を考える', desc:'その人だけでなく、できるだけ多くの人に効く解を探す。'},
-  oneToN:   {label:'1:Nの対応を考える', desc:'今回の1件を、次の100件にも効く形（FAQ等）で残す。'},
+  fact:     {label:'事実を確認する',    desc:'推測ではなく、実際に起きた事実を一つずつ確認する。',
+    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>'},
+  abstract: {label:'抽象化する',        desc:'目の前の依頼を、一段上の「本当の目的」に置き換えて考える。',
+    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.8 5.7 21l2.3-7.2-6-4.4h7.6z"/></svg>'},
+  customer: {label:'顧客視点で考える',  desc:'相手の立場・業務の流れから、何が必要かを考える。',
+    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>'},
+  gcd:      {label:'最大公約数を考える', desc:'その人だけでなく、できるだけ多くの人に効く解を探す。',
+    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 20c0-3 3-5.5 7-5.5s7 2.5 7 5.5"/><path d="M17 14.5c2.5.5 4 2 4 4"/></svg>'},
+  oneToN:   {label:'1:Nの対応を考える', desc:'今回の1件を、次の100件にも効く形（FAQ等）で残す。',
+    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 8.5c0 2.5-2 4.5-4.5 4.5S13 11 13 8.5 15 4 17.5 4 22 6 22 8.5z"/><path d="M2 15.5C2 13 4 11 6.5 11S11 13 11 15.5 9 20 6.5 20 2 18 2 15.5z"/><path d="M13.5 8.5L11 15.5"/></svg>'},
 };
 
 /* ---------- icons ---------- */
@@ -277,36 +350,32 @@ const FLOWS = [
     ex:'「どうやって◯◯するの？」「これはどういう仕様？」',
     motto:'まずは聞かれたことに、ちゃんと答える。',
     steps:[
-      {title:'問い合わせの背景を確認する', noteLabel:'背景・目的でわかったこと', items:[
+      {title:'問い合わせの背景を確認する', noteLabel:'背景・目的', items:[
         {q:'やりたいことを確認する', sub:'TERMINALの機能に期待していることは何か'},
         {q:'困っていることを確認する', sub:'以前はどうやっていたか／導入前はどうだったか／その問題点は何か'},
         {q:'目的を確認する（結局、何を実現したいのか）'},
       ]},
-      {title:'プロダクトとして正しい方法を検討する', kanten:['abstract','customer'], items:[
+      {title:'プロダクトとして正しい方法を検討する', kanten:['abstract','customer'], noteLabel:'案内する内容', items:[
         {q:'作業の順番を変えるだけで解決しないか'},
         {q:'いまの仕様で実現できる、いちばん良い方法は何か'},
       ]},
-      {title:'案内する', kanten:['oneToN'], items:[
+      {title:'案内する', kanten:['oneToN'], noteLabel:'FAQの有無・作成タスクの要否', items:[
         {q:'FAQがある → FAQを添えて案内する'},
         {q:'FAQがない → 案内したうえで、FAQ作成タスクを切る'},
       ]},
     ],
     output:{
       title:'対応メモにまとめる',
-      desc:'チャット返信や社内共有にそのまま使えます。FAQ未整備なら作成タスクを忘れずに。',
+      desc:'STEPのメモから自動で組み上がります。',
       build:n=>`【操作方法・仕様の問い合わせ 対応メモ】
 ■ 背景・目的
 ${n['s0']||'（未記入）'}
 
 ■ 案内した内容
-${n['out_answer']||'（未記入）'}
+${n['s1']||'（未記入）'}
 
-■ FAQ
-${n['out_faq']||'（FAQの有無・作成タスクの要否を記入）'}`,
-      fields:[
-        {key:'out_answer', label:'案内した内容'},
-        {key:'out_faq', label:'FAQの有無・作成タスク'},
-      ],
+■ FAQの有無・作成タスク
+${n['s2']||'（未記入）'}`,
     }
   },
   {
@@ -331,7 +400,7 @@ ${n['out_faq']||'（FAQの有無・作成タスクの要否を記入）'}`,
         {q:'イレギュラーな作業をしていないか'},
         {q:'本来・急ぎの目的は何か', kanten:['abstract'], sub:'急ぎなら、目的を達成できる代替案を検討・案内する'},
       ]},
-      {title:'不具合を起票する', items:[
+      {title:'不具合を起票する', noteLabel:'事象サマリ・影響範囲・あるべき挙動', items:[
         {q:'ユーザーからの報告は、事実に忠実に書く'},
         {q:'他の機能や画面への影響はあるか'},
         {q:'本来どのような挙動になるべきか', sub:'履歴一覧を確認する／伊奈さんに確認する'},
@@ -339,29 +408,20 @@ ${n['out_faq']||'（FAQの有無・作成タスクの要否を記入）'}`,
     ],
     output:{
       title:'不具合チケットにまとめる',
-      desc:'記入欄を埋めると、起票用のテンプレートが組み上がります。事実に忠実に。',
-      build:n=>`【不具合】${n['out_title']||'（事象を一行で）'}
-
-■ 事象（何が起きたか／ユーザー報告）
-${n['out_phenomenon']||n['s0']||'（未記入）'}
+      desc:'STEPのメモから自動で組み上がります。事実に忠実に。',
+      build:n=>`【不具合】
 
 ■ 再現手順・条件
 ${n['s0']||'（未記入）'}
 
-■ 影響範囲（他ユーザー・他機能/画面）
-${n['out_impact']||'（未記入）'}
+■ 原因の仮説
+${n['s1']||'（未記入）'}
 
-■ 本来あるべき挙動
-${n['out_expected']||'（未記入。履歴一覧／伊奈さんに確認）'}
+■ 確認結果・代替案
+${n['s2']||'（未記入）'}
 
-■ 補足（顧客の急ぎ目的・案内した代替案）
-${n['s2']||'（未記入）'}`,
-      fields:[
-        {key:'out_title', label:'事象（一行サマリ）'},
-        {key:'out_phenomenon', label:'事象の詳細（任意。空なら手順を流用）'},
-        {key:'out_impact', label:'影響範囲'},
-        {key:'out_expected', label:'本来あるべき挙動'},
-      ],
+■ 事象サマリ・影響範囲・あるべき挙動
+${n['s3']||'（未記入）'}`,
     }
   },
   {
@@ -393,14 +453,14 @@ ${n['s2']||'（未記入）'}`,
         {q:'誰にとっての課題か'},
         {q:'TERMINAL上のデータ構造はどうなっているか'},
       ]},
-      {title:'起票する', items:[
+      {title:'起票する', noteLabel:'起票サマリ・補足（他サービスとの違い・データ構造など）', items:[
         {q:'ここまでの内容を、起票文にまとめる'},
       ]},
     ],
     output:{
       title:'要望チケットにまとめる',
-      desc:'現状→課題→ソリューションの順で、判断に必要な材料がそろった形に整えます。',
-      build:n=>`【要望・機能改善】${n['out_title']||'（要望を一行で）'}
+      desc:'STEPのメモから自動で組み上がります。',
+      build:n=>`【要望・機能改善】
 
 ■ 現状（誰が・どうやっている・頻度/規模）
 ${n['s0']||'（未記入）'}
@@ -411,12 +471,8 @@ ${n['s1']||'（未記入）'}
 ■ 想定ソリューション
 ${n['s2']||'（未記入）'}
 
-■ 補足（他ブランド・他サービスとの違い、データ構造）
-${n['out_note']||'（未記入）'}`,
-      fields:[
-        {key:'out_title', label:'要望（一行サマリ）'},
-        {key:'out_note', label:'補足（違い・データ構造など）'},
-      ],
+■ 起票サマリ・補足
+${n['s3']||'（未記入）'}`,
     }
   },
 ];
@@ -427,6 +483,15 @@ const state = { flow:null, checked:{}, notes:{} };
 /* ---------- helpers ---------- */
 const el = (t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
 const CHK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>';
+
+/* ---------- home 観点グリッド ---------- */
+const kantenGrid = document.getElementById('kantenGrid');
+['fact','abstract','customer','gcd'].forEach(kk=>{
+  const k = KANTEN[kk];
+  const c = el('div','kg-card');
+  c.innerHTML = `<div class="kg-icon">${k.icon}</div><div class="kg-label">${k.label}</div><div class="kg-desc">${k.desc}</div>`;
+  kantenGrid.appendChild(c);
+});
 
 /* ---------- home cards ---------- */
 const cards = document.getElementById('cards');
@@ -580,7 +645,6 @@ let previewEl=null;
 function noteMap(f){
   const m={};
   f.steps.forEach((st,si)=>{ m['s'+si]=state.notes[`${f.id}:s${si}`]||''; });
-  (f.output.fields||[]).forEach(fl=>{ m[fl.key]=state.notes[`${f.id}:${fl.key}`]||''; });
   return m;
 }
 function refreshPreview(f){
@@ -591,30 +655,60 @@ function renderOutput(f){
   const card = el('div','output-card');
   card.innerHTML = `<h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>${f.output.title}</h3><p>${f.output.desc}</p>`;
 
-  (f.output.fields||[]).forEach(fl=>{
-    const w = el('div'); w.style.marginBottom='10px';
-    w.innerHTML = `<label style="display:block;font-size:12px;font-weight:700;color:rgba(255,255,255,.62);margin-bottom:5px">${fl.label}</label>`;
-    const ta = el('textarea'); ta.style.minHeight='44px';
-    ta.style.background='rgba(255,255,255,.08)'; ta.style.color='#FFFFFF'; ta.style.borderColor='rgba(255,255,255,.16)';
-    const nkey=`${f.id}:${fl.key}`;
-    ta.value=state.notes[nkey]||'';
-    ta.oninput=()=>{ state.notes[nkey]=ta.value; refreshPreview(f); };
-    w.appendChild(ta); card.appendChild(w);
-  });
-
-  const pre = el('pre','preview'); pre.textContent=f.output.build(noteMap(f));
+  const pre = el('pre','preview'); pre.style.display='none';
   previewEl=pre; card.appendChild(pre);
 
-  const btn = el('button','copy-btn',`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>起票文をコピー`);
-  btn.onclick=async()=>{
-    const text = f.output.build(noteMap(f));
-    try{ await navigator.clipboard.writeText(text); }
-    catch(e){ const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
-    btn.classList.add('copied');
-    btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>コピーしました`;
-    setTimeout(()=>{ btn.classList.remove('copied'); btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>起票文をコピー`; },1800);
+  const errEl = el('div'); errEl.style.cssText='font-size:11.5px;color:var(--red);margin-bottom:8px;display:none;';
+
+  const IC_SLACK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/><path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/></svg>`;
+
+  // 清書ボタン
+  const rewriteBtn = el('button','rewrite-btn'); rewriteBtn.style.cssText='width:100%;justify-content:center;margin-bottom:8px;font-size:15px;font-weight:700;padding:13px;border-radius:11px;letter-spacing:.03em;';
+  rewriteBtn.type='button'; rewriteBtn.innerHTML = IC_SPARK + '清書する';
+  rewriteBtn.onclick = async () => {
+    const nm = noteMap(f);
+    const notesText = f.steps.map((st,si)=>st.noteLabel && nm['s'+si] ? `【${st.noteLabel}】\n${nm['s'+si]}` : '').filter(Boolean).join('\n\n');
+    if (!notesText.trim()) { errEl.textContent='⚠ STEPにメモを入力してください'; errEl.style.display='block'; return; }
+    errEl.style.display='none';
+    rewriteBtn.classList.add('loading'); rewriteBtn.innerHTML = IC_SPIN + '清書中…';
+    try {
+      const prompt = `以下はカスタマーサポート対応（${f.title}）で収集したメモです。これを元に、社内チケット・Slack投稿として読みやすい日本語の文章を作成してください。見出しと本文を使い、事実に忠実に、簡潔にまとめてください。テンプレート文言は使わず、メモの内容だけから文章を構成してください。\n\n${notesText}`;
+      const result = await rewriteMemo(prompt, '');
+      pre.textContent = result;
+      pre.style.display = 'block';
+      slackBtn.style.display = 'flex';
+    } catch(e) {
+      errEl.textContent = '⚠ ' + e.message; errEl.style.display='block';
+    }
+    rewriteBtn.classList.remove('loading'); rewriteBtn.innerHTML = IC_SPARK + '清書する';
   };
-  card.appendChild(btn);
+
+  // Slackボタン（清書後に表示）
+  const slackBtn = el('button','copy-btn'); slackBtn.style.display='none';
+  slackBtn.innerHTML = IC_SLACK + 'Slackに送信';
+  slackBtn.onclick = async () => {
+    const text = pre.textContent;
+    errEl.style.display = 'none';
+    slackBtn.style.opacity='.5'; slackBtn.style.pointerEvents='none';
+    slackBtn.innerHTML = IC_SPIN + '送信中…';
+    try {
+      const res = await fetch('/api/slack', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ text })
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      slackBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>送信しました`;
+      slackBtn.classList.add('copied');
+      setTimeout(()=>{ slackBtn.classList.remove('copied'); slackBtn.innerHTML=IC_SLACK+'Slackに送信'; slackBtn.style.opacity=''; slackBtn.style.pointerEvents=''; },2000);
+    } catch(e) {
+      errEl.textContent='⚠ 送信に失敗しました: '+e.message; errEl.style.display='block';
+      slackBtn.innerHTML=IC_SLACK+'Slackに送信'; slackBtn.style.opacity=''; slackBtn.style.pointerEvents='';
+    }
+  };
+
+  card.appendChild(errEl);
+  card.appendChild(rewriteBtn);
+  card.appendChild(slackBtn);
   o.appendChild(card);
   return o;
 }
