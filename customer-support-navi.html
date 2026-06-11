@@ -876,44 +876,62 @@ function renderOutputStep(f, si){
     hideErr();
   }
 
-  function startRecording(){
-    if(!SR){ showErr('⚠ このブラウザは音声認識に対応していません（Chrome推奨）'); openSheet(); return; }
-    resetSheet();
-    openSheet();
-    recognition = new SR();
-    recognition.lang = 'ja-JP';
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.onresult = e => {
+  function buildRecognition(){
+    const r = new SR();
+    r.lang = 'ja-JP';
+    r.continuous = false; // iOSはcontinuous非対応のためonendで再起動
+    r.interimResults = true;
+    r.onresult = e => {
       let interim = '';
       for(let i = e.resultIndex; i < e.results.length; i++){
         const t = e.results[i][0].transcript;
-        if(e.results[i].isFinal) finalText += t;
+        if(e.results[i].isFinal) finalText += (finalText ? ' ' : '') + t;
         else interim += t;
       }
       interimText = interim;
       renderTranscript();
     };
-    recognition.onerror = e => {
+    r.onerror = e => {
+      // no-speechは無音タイムアウト：再起動で継続
+      if(e.error === 'no-speech' && isRecording){ restartRecognition(); return; }
+      if(e.error === 'aborted') return; // 意図的停止
       showErr('⚠ 音声認識エラー: ' + e.error);
       stopRecording();
     };
-    recognition.onend = () => {
-      if(isRecording){ try{ recognition.start(); }catch(e){} }
+    r.onend = () => {
+      if(isRecording) restartRecognition();
     };
-    recognition.start();
+    return r;
+  }
+
+  function restartRecognition(){
+    if(!isRecording) return;
+    if(recognition){ try{ recognition.abort(); }catch(e){} recognition=null; }
+    setTimeout(()=>{
+      if(!isRecording) return;
+      recognition = buildRecognition();
+      try{ recognition.start(); }catch(e){ showErr('⚠ 再起動エラー: '+e.message); }
+    }, 150);
+  }
+
+  function startRecording(){
+    if(!SR){ showErr('⚠ このブラウザは音声認識に対応していません（Chrome推奨）'); openSheet(); return; }
+    resetSheet();
+    openSheet();
     isRecording = true;
     fab.classList.add('recording');
     dotLive.style.display='block';
     titleText.textContent='録音中';
     statusText.textContent='話しかけてください';
     stopBtn.style.display='flex';
+    recognition = buildRecognition();
+    try{ recognition.start(); }catch(e){ showErr('⚠ 起動エラー: '+e.message); stopRecording(); }
   }
 
   function stopRecording(){
     isRecording = false;
     fab.classList.remove('recording');
-    if(recognition){ try{ recognition.stop(); }catch(e){} recognition=null; }
+    if(recognition){ try{ recognition.abort(); }catch(e){} recognition=null; }
     interimText = '';
     renderTranscript();
     dotLive.style.display='none';
