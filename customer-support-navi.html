@@ -302,8 +302,6 @@
       </svg>
     </button>
     <!-- JS参照用ダミー（非表示） -->
-    <div id="brandRow" style="display:none"></div>
-    <div id="crumb" style="display:none"><span class="crumb-dot"></span><span id="crumbTitle"></span></div>
   </header>
 
   <!-- HOME -->
@@ -612,20 +610,13 @@ FLOWS.forEach(f=>{
 const mount = document.getElementById('flowMount');
 const home = document.getElementById('home');
 const backBtn = document.getElementById('backBtn');
-const brandRow = document.getElementById('brandRow');
-const crumb = document.getElementById('crumb');
-const crumbTitle = document.getElementById('crumbTitle');
 
 function openFlow(id){
   const f = FLOWS.find(x=>x.id===id);
   state.flow=id;
   document.documentElement.style.setProperty('--accent',f.c);
   document.documentElement.style.setProperty('--accent-soft',f.cs);
-  crumb.querySelector('.crumb-dot').style.background=f.c;
   home.style.display='none';
-  brandRow.style.display='none';
-  crumb.style.display='flex';
-  crumbTitle.textContent=f.title;
   mount.innerHTML='';
   mount.appendChild(renderFlow(f));
   window.scrollTo(0,0);
