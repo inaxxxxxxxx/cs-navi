@@ -45,13 +45,7 @@
   .wordmark{font-size:10px;letter-spacing:.22em;color:rgba(255,255,255,.5);font-weight:500;line-height:1;}
   .apptitle{font-size:14px;font-weight:700;letter-spacing:.01em;line-height:1;color:#fff;margin-top:1px;}
   .buddy{font-size:11px;color:var(--ink-3);letter-spacing:.04em;}
-  .back{
-    display:none;align-items:center;gap:4px;background:none;border:0;
-    color:rgba(255,255,255,.7);font:inherit;font-size:12px;font-weight:500;
-    padding:4px 4px;cursor:pointer;
-    position:absolute;left:14px;
-  }
-  .back svg{width:14px;height:14px;}
+  .back{display:none!important;}
   .crumb{display:flex;align-items:center;gap:8px;}
   .crumb-dot{width:8px;height:8px;border-radius:3px;background:var(--accent);flex:none;}
   .crumb .apptitle{color:#fff;font-size:14px;}
@@ -629,7 +623,6 @@ function openFlow(id){
   document.documentElement.style.setProperty('--accent-soft',f.cs);
   crumb.querySelector('.crumb-dot').style.background=f.c;
   home.style.display='none';
-  backBtn.style.display='inline-flex';
   brandRow.style.display='none';
   crumb.style.display='flex';
   crumbTitle.textContent=f.title;
@@ -640,7 +633,6 @@ function openFlow(id){
 function goHome(){
   state.flow=null;
   home.style.display='block';
-  backBtn.style.display='none';
   mount.innerHTML='';
   document.documentElement.style.setProperty('--accent','var(--gold)');
   document.documentElement.style.setProperty('--accent-soft','var(--surface-2)');
