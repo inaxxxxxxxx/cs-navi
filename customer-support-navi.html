@@ -33,6 +33,7 @@
     height:52px;display:flex;align-items:center;justify-content:center;
     padding:0 18px;border-bottom:none;
   }
+  .header-logo-btn{background:none;border:0;padding:8px 4px;cursor:pointer;display:flex;align-items:center;-webkit-tap-highlight-color:transparent;}
   .header-logo{width:180px;height:auto;display:block;flex:none;}
   .header-logo .st0{fill:#fff;fill-rule:evenodd;}
   .brand{display:flex;align-items:center;gap:9px;}
@@ -301,9 +302,11 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       もどる
     </button>
-    <svg class="header-logo" viewBox="0 0 2267.7 566.9" xmlns="http://www.w3.org/2000/svg">
-      <path class="st0" d="M2001,186.5h32.9v160h172.7v33.7h-205.6v-193.7ZM1894.1,329.7h-123.4l-24.7,50.5h-41.1l115.1-193.7h24.7l115.1,193.7h-41.1l-24.7-50.5ZM1831.7,229.5l-44.5,74.9h90.5l-46-74.9ZM1244.4,380.2h-32.9l-.9-140.8-89.8,112.5-90-112.5-.2,140.8h-32.9v-193.7h32.9l90.3,114.5,90.7-114.5h32.9v193.7ZM890.8,380.2l-66.6-84.2h-106.1v84.2h-32.9v-193.7h164.5c22.9,0,38.6,1.6,52.8,11.4,13.8,10.1,20.7,23.9,20.7,41.4s-5.3,26.4-16,36.9c-10.5,10.7-24.5,17.3-42,19.8l66.7,84.2h-41.1ZM875.8,260.1c6.8-5.3,10.1-12.2,10.1-20.7s-3.4-15.4-10.1-20.1c-6.7-4.7-21.8-7.5-34.4-7.5h-123.4v58.9h123.4c12.3,0,27.3-6.1,34.4-10.6ZM397.1,186.5h221.8l.5,25.8-189.2.3v49.7l124.7.2.5,25.1h-125.1v67.4h197.4v25.3h-230.3l-.2-193.7ZM218.6,380.6h-32.8v-165.5H61.1v-29.1h282.1v29.1h-124.7v165.5ZM1367.8,380.2h-32.9v-193.7h32.9v193.7ZM1622.7,321.3v-134.8h32.9v193.7h-16.4l-148-134.8v134.8h-32.9v-193.7h16.5l148,134.8Z"/>
-    </svg>
+    <button class="header-logo-btn" id="logoBtn" aria-label="ホームに戻る">
+      <svg class="header-logo" viewBox="0 0 2267.7 566.9" xmlns="http://www.w3.org/2000/svg">
+        <path class="st0" d="M2001,186.5h32.9v160h172.7v33.7h-205.6v-193.7ZM1894.1,329.7h-123.4l-24.7,50.5h-41.1l115.1-193.7h24.7l115.1,193.7h-41.1l-24.7-50.5ZM1831.7,229.5l-44.5,74.9h90.5l-46-74.9ZM1244.4,380.2h-32.9l-.9-140.8-89.8,112.5-90-112.5-.2,140.8h-32.9v-193.7h32.9l90.3,114.5,90.7-114.5h32.9v193.7ZM890.8,380.2l-66.6-84.2h-106.1v84.2h-32.9v-193.7h164.5c22.9,0,38.6,1.6,52.8,11.4,13.8,10.1,20.7,23.9,20.7,41.4s-5.3,26.4-16,36.9c-10.5,10.7-24.5,17.3-42,19.8l66.7,84.2h-41.1ZM875.8,260.1c6.8-5.3,10.1-12.2,10.1-20.7s-3.4-15.4-10.1-20.1c-6.7-4.7-21.8-7.5-34.4-7.5h-123.4v58.9h123.4c12.3,0,27.3-6.1,34.4-10.6ZM397.1,186.5h221.8l.5,25.8-189.2.3v49.7l124.7.2.5,25.1h-125.1v67.4h197.4v25.3h-230.3l-.2-193.7ZM218.6,380.6h-32.8v-165.5H61.1v-29.1h282.1v29.1h-124.7v165.5ZM1367.8,380.2h-32.9v-193.7h32.9v193.7ZM1622.7,321.3v-134.8h32.9v193.7h-16.4l-148-134.8v134.8h-32.9v-193.7h16.5l148,134.8Z"/>
+      </svg>
+    </button>
     <!-- JS参照用ダミー（非表示） -->
     <div id="brandRow" style="display:none"></div>
     <div id="crumb" style="display:none"><span class="crumb-dot"></span><span id="crumbTitle"></span></div>
@@ -634,17 +637,17 @@ function openFlow(id){
   mount.appendChild(renderFlow(f));
   window.scrollTo(0,0);
 }
-backBtn.onclick = ()=>{
+function goHome(){
   state.flow=null;
   home.style.display='block';
   backBtn.style.display='none';
-  brandRow.style.display='flex';
-  crumb.style.display='none';
   mount.innerHTML='';
   document.documentElement.style.setProperty('--accent','var(--gold)');
   document.documentElement.style.setProperty('--accent-soft','var(--surface-2)');
   window.scrollTo(0,0);
-};
+}
+backBtn.onclick = goHome;
+document.getElementById('logoBtn').onclick = ()=>{ if(state.flow) goHome(); };
 
 /* ---------- render a flow ---------- */
 function renderFlow(f){
