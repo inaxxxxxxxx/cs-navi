@@ -30,9 +30,11 @@
   /* ---------- Header ---------- */
   header{
     position:sticky;top:0;z-index:30;background:#424242;
-    height:40px;display:flex;align-items:center;
+    height:40px;display:flex;align-items:center;justify-content:center;
     padding:0 18px;border-bottom:none;
   }
+  .header-logo{width:180px;height:auto;display:block;flex:none;}
+  .header-logo .st0{fill:#fff;fill-rule:evenodd;}
   .brand{display:flex;align-items:center;gap:9px;}
   .mark{
     width:22px;height:22px;border-radius:7px;background:rgba(255,255,255,.15);
@@ -43,11 +45,12 @@
   .apptitle{font-size:14px;font-weight:700;letter-spacing:.01em;line-height:1;color:#fff;margin-top:1px;}
   .buddy{font-size:11px;color:var(--ink-3);letter-spacing:.04em;}
   .back{
-    display:none;align-items:center;gap:6px;background:none;border:0;
-    color:rgba(255,255,255,.7);font:inherit;font-size:13px;font-weight:500;
-    padding:4px 4px;margin:0 -4px;cursor:pointer;
+    display:none;align-items:center;gap:4px;background:none;border:0;
+    color:rgba(255,255,255,.7);font:inherit;font-size:12px;font-weight:500;
+    padding:4px 4px;cursor:pointer;
+    position:absolute;left:14px;
   }
-  .back svg{width:15px;height:15px;}
+  .back svg{width:14px;height:14px;}
   .crumb{display:flex;align-items:center;gap:8px;}
   .crumb-dot{width:8px;height:8px;border-radius:3px;background:var(--accent);flex:none;}
   .crumb .apptitle{color:#fff;font-size:14px;}
@@ -228,19 +231,14 @@
   <header>
     <button class="back" id="backBtn" aria-label="戻る">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      対応の種別をえらび直す
+      もどる
     </button>
-    <div class="brand" id="brandRow">
-      <div class="mark"><span></span></div>
-      <div>
-        <div class="wordmark">TERMINAL</div>
-        <div class="apptitle">顧客対応ナビ</div>
-      </div>
-    </div>
-    <div class="crumb" id="crumb" style="display:none">
-      <span class="crumb-dot"></span>
-      <span class="apptitle" id="crumbTitle" style="font-size:16px"></span>
-    </div>
+    <svg class="header-logo" viewBox="0 0 2267.7 566.9" xmlns="http://www.w3.org/2000/svg">
+      <path class="st0" d="M2001,186.5h32.9v160h172.7v33.7h-205.6v-193.7ZM1894.1,329.7h-123.4l-24.7,50.5h-41.1l115.1-193.7h24.7l115.1,193.7h-41.1l-24.7-50.5ZM1831.7,229.5l-44.5,74.9h90.5l-46-74.9ZM1244.4,380.2h-32.9l-.9-140.8-89.8,112.5-90-112.5-.2,140.8h-32.9v-193.7h32.9l90.3,114.5,90.7-114.5h32.9v193.7ZM890.8,380.2l-66.6-84.2h-106.1v84.2h-32.9v-193.7h164.5c22.9,0,38.6,1.6,52.8,11.4,13.8,10.1,20.7,23.9,20.7,41.4s-5.3,26.4-16,36.9c-10.5,10.7-24.5,17.3-42,19.8l66.7,84.2h-41.1ZM875.8,260.1c6.8-5.3,10.1-12.2,10.1-20.7s-3.4-15.4-10.1-20.1c-6.7-4.7-21.8-7.5-34.4-7.5h-123.4v58.9h123.4c12.3,0,27.3-6.1,34.4-10.6ZM397.1,186.5h221.8l.5,25.8-189.2.3v49.7l124.7.2.5,25.1h-125.1v67.4h197.4v25.3h-230.3l-.2-193.7ZM218.6,380.6h-32.8v-165.5H61.1v-29.1h282.1v29.1h-124.7v165.5ZM1367.8,380.2h-32.9v-193.7h32.9v193.7ZM1622.7,321.3v-134.8h32.9v193.7h-16.4l-148-134.8v134.8h-32.9v-193.7h16.5l148,134.8Z"/>
+    </svg>
+    <!-- JS参照用ダミー（非表示） -->
+    <div id="brandRow" style="display:none"></div>
+    <div id="crumb" style="display:none"><span class="crumb-dot"></span><span id="crumbTitle"></span></div>
   </header>
 
   <!-- HOME -->
